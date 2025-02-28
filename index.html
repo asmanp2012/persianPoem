@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحلیل شعر</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./bootstrap.min.css" />
+  <link rel="stylesheet" href="./Vazir-Code.css" />
+  <style>
+    .syllable-display {
+      margin-top: 20px;
+      font-size: 1.2em;
+      white-space: nowrap; /* جلوگیری از شکستن خط */
+      font-family: 'Vazir Code';
+      direction: ltr;
+      text-align: left;
+    }
+    .result {
+      text-align: right;
+    }
+  </style>
+</head>
+<body style="text-align: center;">
+  <div class="container mt-5">
+    <h2 class="mb-3">تحلیل شعر</h2>
+    
+    <div id="input-container" class="mb-3"></div>
+    
+    <button class="btn btn-primary mb-3" onclick="addLine()">افزودن مصرع جدید</button>
+
+    <div class="import-export"><textarea
+      onchange="importPoem(event, this)"
+      onfocus="saveLast(event, this)"
+      style="width: 100%;"
+      rows="15"
+    ></textarea></div>
+  </div>
+
+  <script src="./check-poem.js"></script>
+  <script>
+    window.lastPoem = '';
+    function addLine() {
+      const inputContainer = document.getElementById('input-container');
+      const newInput = document.createElement('div');
+      newInput.className = 'row death mb-3';
+      newInput.innerHTML = `
+        <div class="col-8">
+          <div class="row">
+            <div class="col-12">
+              <input
+                class="form-control mb-2"
+                type="text"
+                placeholder="مصرع جدید"
+                onkeydown="inputEnter(event, this)"
+              >
+            </div>
+          </div>
+          <div class="row result-container">
+            <div class="col-9 result"></div>
+            <div class="col-3 syllable-count"></div>
+          </div>
+        </div> <!-- اصلاح شده -->
+        <div class="syllable-display col-4"></div>
+      `;
+      inputContainer.appendChild(newInput);
+      const allDeath = document.querySelectorAll('.death');
+      [...allDeath].forEach((el) => { 
+        checkValue(el);
+      });
+    }
+
+    function inputEnter(event, inputEl) {
+      if (event.key === 'Enter') {
+        const deathEl = inputEl.parentElement.parentElement.parentElement.parentElement; // استفاده از parentElement
+        if(deathEl.nextElementSibling == null)
+        {
+          addLine();
+        }
+        else
+        {
+          checkValue(deathEl);
+        }
+        // 
+      }
+    }
+
+    function checkValue(deathEl)
+    {
+      const value = deathEl.querySelector('input').value;
+      const resultEl = deathEl.querySelector('.result'); // عنصر نتیجه
+      const syllableCountEl = deathEl.querySelector('.syllable-count'); // عنصر تعداد سیلاب‌ها
+      const syllables = extractSyllablesAndLettersFromText(value); // تابعی که در jstest.js تعریف شده
+      resultEl.innerText = syllables.join(' + '); // نمایش نتیجه
+      syllableCountEl.innerText = `تعداد سیلاب‌ها: ${syllables.length}`; // نمایش تعداد سیلاب‌ها
+      const shape = syllables.map(syllable => syllable.length === 1 ? 'U' : '-').join(''); // نمایش سیلاب‌ها
+      deathEl.querySelector('.syllable-display').innerText = shape;
+      // console.log(syllables, shape);
+      exportPoem()
+    }
+
+    function exportPoem()
+    {
+      const allDeathEl = document.querySelectorAll('.death');
+      const allDeath = [...allDeathEl].map((el, i) => { 
+        if(i%2 != 0)
+        {
+          return el.querySelector('input').value + '\n';
+        }
+        return el.querySelector('input').value;
+      });
+      const outputEl = document.querySelector('textarea');
+      outputEl.value = allDeath.join('\n');
+    }
+
+    function saveLast(event, inputEl) {
+      window.lastPoem = inputEl.value;
+    }
+
+    function importPoem(event, inputEl) {
+      const deathContainer = document.querySelector('#input-container');
+      const poemText = inputEl.value; // دریافت متن شعر
+      if(poemText.length <  window.lastPoem.length) {
+        console.log('yes');
+        deathContainer.innerHTML = ''; 
+      }
+      let lines = poemText.split('\n'); // تقسیم متن به خطوط
+      lines = lines.filter((line) => line.trim() !== '');
+      lines.forEach(line => {
+        addLine();
+      });
+      const allDeath = document.querySelectorAll('.death');
+      [...allDeath].forEach((el, i) => { 
+        el.querySelector('input').value = lines[i];
+        checkValue(el);
+      });
+    }
+  </script>
+
+  <!-- Bootstrap JS (optional) -->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست لغت ها</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./bootstrap.min.css" />
+  <link rel="stylesheet" href="./Vazir-Code.css" />
+  <style>
+    .syllable-display {
+      margin-top: 20px;
+      font-size: 1.2em;
+      white-space: nowrap; /* جلوگیری از شکستن خط */
+      font-family: 'Vazir Code';
+      direction: ltr;
+      text-align: left;
+    }
+    .result {
+      text-align: right;
+    }
+  </style>
+</head>
+<body style="text-align: center;">
+
+  <div class="container mt-5">
+    <h2 class="text-center">کلمات و هجای آن‌ها</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>کلمه</th>
+                <th>هجای آن</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <!-- می‌توانید کلمات بیشتری اضافه کنید -->
+        </tbody>
+    </table>
+  </div>
+  <script src="./check-poem.js"></script>
+  <script>
+    const htmlList = Object.keys(wordList).map((item, key) => `<tr>
+                <td>${key+1}</td>
+                <td>${item}</td>
+                <td>${wordList[item].join(' + ')}</td>
+            </tr>`).join('');
+    document.querySelector('tbody').innerHTML = htmlList;
+  </script>
+
+  <!-- Bootstrap JS (optional) -->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+</html>
