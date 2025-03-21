@@ -25,6 +25,7 @@
 
   <div class="container mt-5">
     <h2 class="text-center">کلمات و هجای آن‌ها</h2>
+    <h2 class="count-word">تعداد کلمات: </h2>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -47,6 +48,7 @@
                 <td>${wordList[item].join(' + ')}</td>
             </tr>`).join('');
     document.querySelector('tbody').innerHTML = htmlList;
+    document.querySelector('.count-word').innerHTML = `تعداد کلمات: ${Object.keys(wordList).length}`;
   </script>
 
   <!-- Bootstrap JS (optional) -->
