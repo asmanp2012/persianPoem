@@ -19,6 +19,10 @@
     .result {
       text-align: right;
     }
+    
+    td .bi-check-circle-fill {
+      color: #2fa02f;
+    }
   </style>
 </head>
 <body style="text-align: center;">
@@ -26,12 +30,14 @@
   <div class="container mt-5">
     <h2 class="text-center">کلمات و هجای آن‌ها</h2>
     <h2 class="count-word">تعداد کلمات: </h2>
+    <h2 class="count-word-accept">تعداد کلمات تایید شده: </h2>
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th></th>
                 <th>کلمه</th>
                 <th>هجای آن</th>
+                <th>تایید</th>
             </tr>
         </thead>
         <tbody>
@@ -46,9 +52,11 @@
                 <td>${key+1}</td>
                 <td>${item}</td>
                 <td>${wordList[item].join(' + ')}</td>
+                <td>${acceptWordList[item] != null ? `<img width="20" src="./check.png" />` : ``}</td>
             </tr>`).join('');
     document.querySelector('tbody').innerHTML = htmlList;
     document.querySelector('.count-word').innerHTML = `تعداد کلمات: ${Object.keys(wordList).length}`;
+    document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
   </script>
 
   <!-- Bootstrap JS (optional) -->
