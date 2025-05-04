@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لیست لغت ها</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="./bootstrap.min.css" />
-  <link rel="stylesheet" href="./Vazir-Code.css" />
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./assets/css/Vazir-Code.css" />
   <style>
     .syllable-display {
       margin-top: 20px;
@@ -49,14 +49,14 @@
         </tbody>
     </table>
   </div>
-  <script src="./check-poem.js"></script>
-  <script src="./word-list-dont-need.js"></script>
+  <script src="./assets/js/check-poem.js"></script>
+  <script src="./assets/js/word-list-dont-need.js"></script>
   <script>
     const htmlList = Object.keys(wordList).map((item, key) => `<tr>
                 <td>${key+1}</td>
                 <td>${item}</td>
                 <td>${wordList[item].join(' + ')}</td>
-                <td>${acceptWordList[item] != null ? `<img width="20" src="./check.png" />` : ``}</td>
+                <td>${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}</td>
             </tr>`).join('');
     document.querySelector('tbody').innerHTML = htmlList;
     document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
