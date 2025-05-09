@@ -54,10 +54,11 @@ let acceptWordList = {
 }
 let wordList = {
   ...acceptWordList,
+  "اما": ['ا', 'ما'],
   "انبار": ['ان', 'با', 'ر'],
   "ارزش": ['ار', 'زش'],
   "ارزد": ['ار', 'زد'],
-  
+  "آنتوان": ["ءا", "ن", "تو", "وا", "ن"],
   "آرشم": ["ءا", 'ر', 'شم'],
   "آرشت": ["ءا", 'ر', 'شت'],
   "آرشش": ["ءا", 'ر', 'شش'],
@@ -103,6 +104,7 @@ let wordList = {
   "بدانید": ['ب', 'دا', 'نی', 'د'],
   "بدانند": ['ب', 'دا', 'نن', 'د'],
 
+  "بدون": ['ب', 'دو', 'ن'],
   "بفروشم": ['بف', 'رو', 'شم'],
   "بفروشی": ['بف', 'رو', 'شی'],
   "بفروشد": ['بف', 'رو', 'شد'],
@@ -291,6 +293,7 @@ let wordList = {
   "ردیف": ['ر', 'دی', 'ف'],
   "رفیق": ['ر', 'فی' , 'ق'],
 
+  "زره": ['ز', 'ره'],
   "سوی": ['سو', 'ی'],
 
   "لیوان": ['لی', 'وا', 'ن'],
@@ -340,6 +343,10 @@ let wordList = {
   "عشقم": ['عش', 'قم'],
   "عشقت": ['عش', 'قت'],
   "عشقش": ['عش', 'قش'],
+  "عروسک": ['ع', 'رو', 'سک'],
+  "عروسکم": ['ع', 'رو', 'س', 'کم'],
+  "عروسکت": ['ع', 'رو', 'س', 'کت'],
+  "عروسکش": ['ع', 'رو', 'س', 'کش'],
   "صبر": ['ص', 'بر'],
   "عجب": ['ع', 'جب'],
   "عجیب": ['ع', 'جی', 'ب'],
@@ -405,6 +412,7 @@ let wordList = {
   "هستید": ['هس', 'تی', "د"],
   "هستند": ['هس', 'تن', "د"],
 
+  "نباش": ['ن', 'با', 'ش'],
   "نشان": ['ن', 'شا'],
   "نشانم": ['ن', 'شا', 'نم'],
   "نشانت": ['ن', 'شا', 'نت'],
@@ -444,6 +452,7 @@ let wordList = {
   "حسادتان": ['ح','سا', 'د', 'ت', 'تا'],
   "حسادشان": ['ح','سا', 'د', 'ت', 'شا'],
 
+  "چخوف": ['چ', 'خو', 'ف'],
   "طعنه": ['طع', 'نه'],
   "وقتی": ['وق', 'تی'],
 
@@ -461,6 +470,8 @@ let wordList = {
   "میزنید": ['می', 'ز', 'نی', 'د'],
   "میزنند": ['می', 'ز', 'نن', 'د'],
   
+  "میرسد": ['می', 'ر', 'سد'],
+  
   "محرم": ["مح", 'رم'],
   "محرمه": ["مح", 'ر', 'مه'],
   "مستطیل": ['مس', 'ت', 'طی', 'ل'],
@@ -471,6 +482,7 @@ let wordList = {
   "مستطیلتان": ['مس', 'ت', 'طی', 'ل', 'تا'],
   "مستطیلشان": ['مس', 'ت', 'طی', 'ل', 'شا'],
 
+  "نه": ['ن'],
   "نگفتم": ['ن', 'گف', 'تم'],
   "نمی": ['ن', 'می'],
   "نغمه": ['نغ', 'مه'],
@@ -997,7 +1009,7 @@ function extractSyllablesV(words, syllables, i)
   let lastSyllable = syllables[lastSyllableIndex];
   if(lastSyllable != null)
   {
-    console.log(lastSyllable.slice(lastSyllable.length -1));
+    // console.log(lastSyllable.slice(lastSyllable.length -1));
     if(lastSyllable.slice(lastSyllable.length -1) != lastChar)
     {
       return [`${lastChar}و`];
@@ -1036,12 +1048,12 @@ function extractSyllablesAndLettersFromWord(word, syllables) {
     const firstChar = word.slice(i, i + 1);
     const secChar = word.slice(i+1, i + 2);
     const thirdChar = word.slice(i+2, i + 3);
-    console.log(twoChars, i);
+    // console.log(twoChars, i);
     if (word.length - i == 1 && firstChar == 'ن' && syllables[-1] == 'با') {
       break; // پایان حلقه
     }
     if (word.length - i < 3) {
-      console.log(word.slice(i, word.length));
+      // console.log(word.slice(i, word.length));
       result.push(word.slice(i)); // اضافه کردن کاراکتر باقی‌مانده
       break; // پایان حلقه
     }
@@ -1083,22 +1095,41 @@ function checkComma(words, i)
   }
 }
 
+function filterWordChar(str)
+{
+  let newWord = str.replaceAll('خوا', 'خا');
+  newWord = newWord.replaceAll('آ', 'ءا');
+  return newWord;
+}
+
+function filterWordSpecialChar(str)
+{
+  let newWord = str.replaceAll('+', '');
+  newWord = newWord.replaceAll('،', '');
+  return newWord;
+}
+
 function extractSyllablesAndLettersFromText(text) {
   const cleanedText = text.replace(/[.'"\]\[؟?,\/#!$%\^&\*;:{}=\-_`~()]/g, '').replace(/\s+/g, ' ').trim();
   const words = cleanedText.split(' ');
   const allResults = [];
 
   words.forEach((word, i) => {
-    let newWord = word.replaceAll('خوا', 'خا');
-    newWord = word.replaceAll('آ', 'ءا');
-    newWord = newWord.replaceAll('،', '');
-
     // این قسمت برای اینه که اگر خواستیم و یک هجای جداگانه حساب بشه با کاما جدا میکنیمش
     const comma = checkComma(words, i);
     let syllablesAndLetters = [];
+    let newWord = filterWordSpecialChar(filterWordChar(word));
     if(comma != false)
     {
-      syllablesAndLetters = comma;
+      if(wordList[filterWordSpecialChar(word)] != null)
+      {
+        syllablesAndLetters = wordList[filterWordSpecialChar(word)];
+      }
+      else
+      {
+        syllablesAndLetters = comma;
+      }
+      
     }
     else if(newWord == 'و')
     {
@@ -1115,9 +1146,9 @@ function extractSyllablesAndLettersFromText(text) {
       // else
       // {
         // console.log(wordList[newWord], newWord);
-        if(wordList[word] != null)
+        if(wordList[filterWordSpecialChar(word)] != null)
         {
-          syllablesAndLetters = wordList[word];
+          syllablesAndLetters = wordList[filterWordSpecialChar(word)];
         }
         else
         {
