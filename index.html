@@ -8,13 +8,21 @@
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./assets/css/Vazir-Code.css" />
   <style>
-    .syllable-display {
-      margin-top: 20px;
+    .syllable-display {display: flex;flex-direction: column;}
+    .syllable-display *{
+      /* margin-top: 20px; */
       font-size: 1.2em;
       white-space: nowrap; /* جلوگیری از شکستن خط */
       font-family: 'Vazir Code';
       direction: ltr;
       text-align: left;
+    }
+    .syllable-display e {
+      text-align: right;
+    }
+    .death {
+      border-bottom: 2px solid #d7d7d7;
+      padding-bottom: 14px;
     }
     .result {
       text-align: right;
@@ -61,7 +69,10 @@
             <div class="col-3 syllable-count"></div>
           </div>
         </div> <!-- اصلاح شده -->
-        <div class="syllable-display col-4"></div>
+        <div class="syllable-display col-4">
+          <span></span>
+          <e><e>
+        </div>
       `;
       inputContainer.appendChild(newInput);
       const allDeath = document.querySelectorAll('.death');
@@ -94,7 +105,9 @@
       resultEl.innerText = syllables.join(' + '); // نمایش نتیجه
       syllableCountEl.innerText = `تعداد سیلاب‌ها: ${syllables.length}`; // نمایش تعداد سیلاب‌ها
       const shape = syllables.map(syllable => syllable.length === 1 ? 'U' : '-').join(''); // نمایش سیلاب‌ها
-      deathEl.querySelector('.syllable-display').innerText = shape;
+      deathEl.querySelector('.syllable-display span').innerText = shape;
+      // console.log(findCombinations(shape));
+      deathEl.querySelector('.syllable-display e').innerText = findCombinations(shape);
       // console.log(syllables, shape);
       exportPoem()
     }

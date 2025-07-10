@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لیست لغت ها</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./assets/css/Vazir-Code.css" />
+  <style>
+    .syllable-display {
+      margin-top: 20px;
+      font-size: 1.2em;
+      white-space: nowrap; /* جلوگیری از شکستن خط */
+      font-family: 'Vazir Code';
+      direction: ltr;
+      text-align: left;
+    }
+    .result {
+      text-align: right;
+    }
+    
+    td .bi-check-circle-fill {
+      color: #2fa02f;
+    }
+  </style>
+</head>
+<body style="text-align: center;">
+
+  <div class="container mt-5">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 50px;"></th>
+                <th style="width: 100px;">کلمه</th>
+                <th style="width: 230px;">هجای آن</th>
+                <th>شکل هجا</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <!-- می‌توانید کلمات بیشتری اضافه کنید -->
+        </tbody>
+    </table>
+  </div>
+  <script src="./assets/js/check-poem.js"></script>
+  <script src="./assets/js/word-list-dont-need.js"></script>
+  <script>
+    const htmlList = Object.keys(baseWord).map((item, key) => `<tr>
+                <td>${key+1}</td>
+                <td>${item}</td>
+                <td>${baseWord[item].join(' + ')}</td>
+                <td class="text-left">${baseWordShape[item]}</td>
+            </tr>`).join('');
+    document.querySelector('tbody').innerHTML = htmlList;
+  </script>
+
+  <!-- Bootstrap JS (optional) -->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> -->
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+</body>
+</html>

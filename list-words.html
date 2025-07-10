@@ -34,6 +34,11 @@
     <h2 class="count-word-accept">تعداد کلمات تایید شده: </h2>
     <h2 class="count-word-not-accept">تعداد کلمات تایید نشده: </h2>
     <h2 class="count-word-dont-need">تعداد کلمات تایید نشده: </h2>
+    <button class="btn btn-primary mb-3 mt-3"
+      onclick="showChoseWord()"
+    >
+      جمع آوری کلمات
+    </button>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -49,6 +54,7 @@
         </tbody>
     </table>
   </div>
+  
   <script src="./assets/js/check-poem.js"></script>
   <script src="./assets/js/word-list-dont-need.js"></script>
   <script>
@@ -56,7 +62,10 @@
                 <td>${key+1}</td>
                 <td>${item}</td>
                 <td>${wordList[item].join(' + ')}</td>
-                <td>${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}</td>
+                <td>
+                  <input name="word" value="${item}" type="checkbox" />
+                  ${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}
+                </td>
             </tr>`).join('');
     document.querySelector('tbody').innerHTML = htmlList;
     document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
@@ -64,6 +73,11 @@
     document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-not-accept').innerHTML = `تعداد کلمات تایید نشده: ${Object.keys(wordList).length - Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-dont-need').innerHTML = `تعداد کلمات خارج از لیست: ${Object.keys(wordListDontNeed).length}`;
+    function showChoseWord() {
+      const inputList = document.querySelectorAll('[type="checkbox"]');
+      const result = [...inputList].filter((input) => input.checked).map((item) => item.value);
+      alert(result);
+    }
   </script>
 
   <!-- Bootstrap JS (optional) -->
