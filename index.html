@@ -134,18 +134,24 @@
       const deathContainer = document.querySelector('#input-container');
       const poemText = inputEl.value; // دریافت متن شعر
       if(poemText.length <  window.lastPoem.length) {
-        console.log('yes');
+        // console.log('yes');
         deathContainer.innerHTML = ''; 
       }
       let lines = poemText.split('\n'); // تقسیم متن به خطوط
       lines = lines.filter((line) => line.trim() !== '');
       lines.forEach(line => {
-        addLine();
+        if(line != '' || line != null)
+        {
+          addLine();
+        }
       });
       const allDeath = document.querySelectorAll('.death');
       [...allDeath].forEach((el, i) => { 
-        el.querySelector('input').value = lines[i];
-        checkValue(el);
+        if(lines[i] != null)
+        {
+          el.querySelector('input').value = lines[i];
+          checkValue(el);
+        }
       });
     }
   </script>
