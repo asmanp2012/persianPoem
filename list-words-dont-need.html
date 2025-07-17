@@ -42,15 +42,9 @@
   <script src="./assets/js/word-list-dont-need.js"></script>
   <script>
     const htmlList = Object.keys(wordListDontNeed).map((item, key) => `<tr>
-                ${
-                  //<td>${key+1}</td>
-                  ''
-                }
+                ${`<td>${key+1}</td>`}
                 <td>${item}</td>
-                ${
-                  //<td>${wordListDontNeed[item].join(' + ')}</td>
-                  ''
-                }
+                ${`<td>${wordListDontNeed[item].join(' + ')}</td>`}
             </tr>`).join('');
     document.querySelector('tbody').innerHTML = htmlList;
   </script>
