@@ -33,12 +33,23 @@
     <h2 class="count-word-need">تعداد کلمات مورد نیاز: </h2>
     <h2 class="count-word-accept">تعداد کلمات تایید شده: </h2>
     <h2 class="count-word-not-accept">تعداد کلمات تایید نشده: </h2>
-    <h2 class="count-word-dont-need">تعداد کلمات تایید نشده: </h2>
-    <button class="btn btn-primary mb-3 mt-3"
-      onclick="showChoseWord()"
-    >
+    <h2 class="count-word-dont-need">تعداد کلمات خارج از لیست: </h2>
+    
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="filterInput">جستجوی کلمه:</label>
+        <input type="text" id="filterInput" placeholder="جستجوی کلمه..." class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label for="weightFilterInput">جستجوی وزن:</label>
+        <input type="text" id="weightFilterInput" placeholder="جستجوی وزن..." class="form-control" />
+      </div>
+    </div>
+    
+    <button class="btn btn-primary mb-3 mt-3" onclick="showChoseWord()">
       جمع آوری کلمات
     </button>
+    
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -48,8 +59,7 @@
                 <th>تایید</th>
             </tr>
         </thead>
-        <tbody>
-            
+        <tbody id="wordListBody">
             <!-- می‌توانید کلمات بیشتری اضافه کنید -->
         </tbody>
     </table>
@@ -58,26 +68,60 @@
   <script src="./assets/js/check-poem.js"></script>
   <script src="./assets/js/word-list-dont-need.js"></script>
   <script>
-    const htmlList = Object.keys(wordList).map((item, key) => `<tr>
-                <td>${key+1}</td>
-                <td>${item}</td>
-                <td>${wordList[item].join(' + ')}</td>
-                <td>
-                  <input name="word" value="${item}" type="checkbox" />
-                  ${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}
-                </td>
-            </tr>`).join('');
-    document.querySelector('tbody').innerHTML = htmlList;
+    function printWords() {
+      const inputText = document.querySelector('#filterInput');
+      const weightInput = document.querySelector('#weightFilterInput');
+      const filterValue = inputText.value.toLowerCase();
+      const weightFilterValue = weightInput.value.toUpperCase();
+      
+      const htmlList = Object.keys(wordList)
+        .filter((item) => {
+          // فیلتر بر اساس کلمه
+          const matchesWord = item.includes(filterValue);
+          // فیلتر بر اساس baseWordShape
+          let matchesWeight = true;
+          if(weightInput.value !== '') {
+            const shape = getShapeOfWord(wordList[item]);
+            console.log(shape, weightFilterValue, wordList[item]);
+            matchesWeight = shape == weightFilterValue;
+          }
+          
+          return matchesWord && matchesWeight;
+        })
+        .map((item, key) => `<tr>
+          <td>${key + 1}</td>
+          <td>${item}</td>
+          <td>${wordList[item].join(' + ')}</td>
+          <td>
+            <input name="word" value="${item}" type="checkbox" />
+            ${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}
+          </td>
+      </tr>`).join('');
+      
+      document.querySelector('#wordListBody').innerHTML = htmlList;
+    }
+
+    printWords();
     document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
     document.querySelector('.count-word-need').innerHTML = `تعداد کلمات مورد نیاز: ${Object.keys(wordList).length}`;
     document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-not-accept').innerHTML = `تعداد کلمات تایید نشده: ${Object.keys(wordList).length - Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-dont-need').innerHTML = `تعداد کلمات خارج از لیست: ${Object.keys(wordListDontNeed).length}`;
+    
     function showChoseWord() {
       const inputList = document.querySelectorAll('[type="checkbox"]');
       const result = [...inputList].filter((input) => input.checked).map((item) => item.value);
       alert(result);
     }
+
+    // فیلتر کردن کلمات
+    document.getElementById('filterInput').addEventListener('input', function() {
+      printWords();
+    });
+
+    document.getElementById('weightFilterInput').addEventListener('input', function() {
+      printWords();
+    });
   </script>
 
   <!-- Bootstrap JS (optional) -->

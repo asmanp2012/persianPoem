@@ -1432,6 +1432,11 @@ Object.keys(baseWord).forEach((key) => {
   baseWordShape[key] = shape;
 });
 
+function getShapeOfWord(inputArray)
+{
+  return inputArray.map(syllable => syllable.length === 1 ? 'U' : '-').join('');
+}
+
 // مرتب‌سازی ارکان بر اساس طول
 const sortedWords = Object.keys(baseWord).sort((a, b) => baseWord[b].join('').length - baseWord[a].join('').length);
 
