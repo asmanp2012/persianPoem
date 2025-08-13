@@ -63,6 +63,19 @@
             <!-- می‌توانید کلمات بیشتری اضافه کنید -->
         </tbody>
     </table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>کلمه</th>
+                <th>هجای آن</th>
+                <th>تایید</th>
+            </tr>
+        </thead>
+        <tbody id="wordListBody2">
+            <!-- می‌توانید کلمات بیشتری اضافه کنید -->
+        </tbody>
+    </table>
   </div>
   
   <script src="./assets/js/check-poem.js"></script>
@@ -82,7 +95,6 @@
           let matchesWeight = true;
           if(weightInput.value !== '') {
             const shape = getShapeOfWord(wordList[item]);
-            console.log(shape, weightFilterValue, wordList[item]);
             matchesWeight = shape == weightFilterValue;
           }
           
@@ -101,7 +113,41 @@
       document.querySelector('#wordListBody').innerHTML = htmlList;
     }
 
+    function printWords2() {
+      const inputText = document.querySelector('#filterInput');
+      const weightInput = document.querySelector('#weightFilterInput');
+      const filterValue = inputText.value.toLowerCase();
+      const weightFilterValue = weightInput.value.toUpperCase();
+      
+      const htmlList = Object.keys(wordListDontNeed)
+        .filter((item) => {
+          // فیلتر بر اساس کلمه
+          const matchesWord = item.includes(filterValue);
+          // فیلتر بر اساس baseWordShape
+          let matchesWeight = true;
+          if(weightInput.value !== '') {
+            const shape = getShapeOfWord(wordListDontNeed[item]);
+            console.log(shape, weightFilterValue, wordListDontNeed[item]);
+            matchesWeight = shape == weightFilterValue;
+          }
+          
+          return matchesWord && matchesWeight;
+        })
+        .map((item, key) => `<tr>
+          <td>${key + 1}</td>
+          <td>${item}</td>
+          <td>${wordListDontNeed[item].join(' + ')}</td>
+          <td>
+            <input name="word" value="${item}" type="checkbox" />
+            ${acceptWordList[item] != null || true ? `<img width="20" src="./assets/images/check.png" />` : ``}
+          </td>
+      </tr>`).join('');
+      
+      document.querySelector('#wordListBody2').innerHTML = htmlList;
+    }
+
     printWords();
+    printWords2();
     document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
     document.querySelector('.count-word-need').innerHTML = `تعداد کلمات مورد نیاز: ${Object.keys(wordList).length}`;
     document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
@@ -117,10 +163,12 @@
     // فیلتر کردن کلمات
     document.getElementById('filterInput').addEventListener('input', function() {
       printWords();
+      printWords2();
     });
 
     document.getElementById('weightFilterInput').addEventListener('input', function() {
       printWords();
+      printWords2();
     });
   </script>
 
