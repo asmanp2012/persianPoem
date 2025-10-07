@@ -82,7 +82,7 @@
     }
 
     function inputEnter(event, inputEl) {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' || event.key === 'Tab') {
         const deathEl = inputEl.parentElement.parentElement.parentElement.parentElement; // استفاده از parentElement
         if(deathEl.nextElementSibling == null)
         {
