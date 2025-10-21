@@ -23,6 +23,14 @@
     td .bi-check-circle-fill {
       color: #2fa02f;
     }
+
+    .input-group {
+      direction: ltr;
+    }
+
+    .input-group * {
+      direction: rtl;
+    }
   </style>
 </head>
 <body style="text-align: center;">
@@ -42,7 +50,12 @@
       </div>
       <div class="col-md-6">
         <label for="weightFilterInput">جستجوی وزن:</label>
-        <input type="text" id="weightFilterInput" placeholder="جستجوی وزن..." class="form-control" />
+        <div class="input-group">
+          <select class="custom-select" id="weightUnitSelect" onclick="choseWeight()">
+            <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
+          </select>
+          <input type="text" id="weightFilterInput" placeholder="جستجوی وزن..." class="form-control" />
+        </div>
       </div>
     </div>
     
@@ -127,7 +140,6 @@
           let matchesWeight = true;
           if(weightInput.value !== '') {
             const shape = getShapeOfWord(wordListDontNeed[item]);
-            console.log(shape, weightFilterValue, wordListDontNeed[item]);
             matchesWeight = shape == weightFilterValue;
           }
           
@@ -148,27 +160,63 @@
 
     printWords();
     printWords2();
+    addBaseWordToSelect();
+  
     document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
     document.querySelector('.count-word-need').innerHTML = `تعداد کلمات مورد نیاز: ${Object.keys(wordList).length}`;
     document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-not-accept').innerHTML = `تعداد کلمات تایید نشده: ${Object.keys(wordList).length - Object.keys(acceptWordList).length}`;
     document.querySelector('.count-word-dont-need').innerHTML = `تعداد کلمات خارج از لیست: ${Object.keys(wordListDontNeed).length}`;
     
+
     function showChoseWord() {
       const inputList = document.querySelectorAll('[type="checkbox"]');
-      const result = [...inputList].filter((input) => input.checked).map((item) => item.value);
-      alert(result);
+      const result = [...inputList].filter((input) => input.checked).map((item) => item.value).join('\n');
+      navigator.clipboard.writeText(result);
+      // console.log('Content copied to clipboard');
+      alert('Copy below text to clipboard. \n'+result);
+    }
+
+    function addBaseWordToSelect() {
+      // انتخاب عنصر سلکت
+      const selectElement = document.getElementById('weightUnitSelect');
+      const weightInput = document.querySelector('#weightFilterInput');
+      selectElement.innerHTML = '<option selected>وزنی انتخاب نشده</option>';
+      // اضافه کردن گزینه‌ها به سلکت
+      for (const key in baseWord) {
+          const option = document.createElement('option');
+          option.value = key;
+          const shape = baseWordShape[key];
+          option.textContent = key+' = '+ shape; // متن گزینه
+          if(weightInput.value.toUpperCase() == shape)
+          {
+            option.selected = true;
+          }
+          selectElement.appendChild(option);
+      }
+    }
+
+    function choseWeight()
+    {
+      const selectElement = document.getElementById('weightUnitSelect');
+      const weightInput = document.querySelector('#weightFilterInput');
+      const chose = selectElement.value;
+      weightInput.value = baseWordShape[chose] ?? '';
+      printWords();
+      printWords2();
     }
 
     // فیلتر کردن کلمات
     document.getElementById('filterInput').addEventListener('input', function() {
       printWords();
       printWords2();
+      addBaseWordToSelect();
     });
 
     document.getElementById('weightFilterInput').addEventListener('input', function() {
       printWords();
       printWords2();
+      addBaseWordToSelect();
     });
   </script>
 
