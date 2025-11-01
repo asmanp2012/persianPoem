@@ -1911,8 +1911,13 @@ function extractSyllablesV(words, syllables, i)
     return 'و';
   }
 }
-
 function extractSyllablesAndLettersFromWord(word, syllables) {
+  if(wordListDontNeed[word] != null) {
+    return {
+      syllables: wordListDontNeed[word],
+      verify: true
+    };
+  }
   const result = [];
   let i = 0;
   while (i < word.length) {
@@ -1948,7 +1953,10 @@ function extractSyllablesAndLettersFromWord(word, syllables) {
       i += 1; // یک کاراکتر را گذر می‌کنیم
     }
   }
-  return result;
+  return {
+    syllables: result,
+    verify: false
+  }
 }
 
 function checkComma(words, i)
@@ -2025,12 +2033,19 @@ function extractSyllablesAndLettersFromText(text) {
         if(wordList[filterWordSpecialChar(word)] != null)
         {
           syllablesAndLetters = wordList[filterWordSpecialChar(word)];
-          const nextIndex = last_index + wordList[filterWordSpecialChar(word)].length - 1
+          const nextIndex = last_index + syllablesAndLetters.length - 1
           verifyIndex = [...verifyIndex, ...Range(last_index, nextIndex)];
         }
         else
         {
-          syllablesAndLetters = extractSyllablesAndLettersFromWord(newWord, allResults);
+          
+          extractSyllables = extractSyllablesAndLettersFromWord(newWord, allResults);
+          syllablesAndLetters = extractSyllables['syllables'];
+          if(extractSyllables['verify'])
+          {
+            const nextIndex = last_index + syllablesAndLetters.length - 1
+            verifyIndex = [...verifyIndex, ...Range(last_index, nextIndex)];
+          }
           // console.log(syllablesAndLetters);
         }
       // }
