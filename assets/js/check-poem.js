@@ -1923,27 +1923,31 @@ function filterWordSpecialChar(str)
   return newWord;
 }
 
+function Range(a,b){
+	// if only one argument supplied then return random number between 1 and argument
+	if (b === undefined) {
+		b = a;
+		a = 1;
+	}
+	return [...Array(b-a+1).keys()].map(x => x+a);
+}
+
 function extractSyllablesAndLettersFromText(text) {
-  const cleanedText = text.replace(/[.'"\]\[؟?,\/#!$%\^&\*;:{}=\-_`~()«»]/g, '').replace(/\s+/g, ' ').trim();
+  let cleanedText = text.replace(/\s+/g, ' ');
+  cleanedText = text.replace('، و', ' ،و');
+  cleanedText = cleanedText.replace(/[.'"\]\[؟?,\/#!$%\^&\*;:{}=\-_`~()«»]/g, '').trim();
   const words = cleanedText.split(' ');
   const allResults = [];
-
+  let verifyIndex = [];
   words.forEach((word, i) => {
     // این قسمت برای اینه که اگر خواستیم و یک هجای جداگانه حساب بشه با کاما جدا میکنیمش
     const comma = checkComma(words, i);
     let syllablesAndLetters = [];
     let newWord = filterWordSpecialChar(filterWordChar(word));
-    if(comma != false)
+    const last_index = allResults.length;
+    if(word == '،و')
     {
-      if(wordList[filterWordSpecialChar(word)] != null)
-      {
-        syllablesAndLetters = wordList[filterWordSpecialChar(word)];
-      }
-      else
-      {
-        syllablesAndLetters = comma;
-      }
-      
+      syllablesAndLetters = 'و'
     }
     else if(newWord == 'و')
     {
@@ -1963,6 +1967,8 @@ function extractSyllablesAndLettersFromText(text) {
         if(wordList[filterWordSpecialChar(word)] != null)
         {
           syllablesAndLetters = wordList[filterWordSpecialChar(word)];
+          const nextIndex = last_index + wordList[filterWordSpecialChar(word)].length - 1
+          verifyIndex = [...verifyIndex, ...Range(last_index, nextIndex)];
         }
         else
         {
@@ -1971,8 +1977,12 @@ function extractSyllablesAndLettersFromText(text) {
         }
       // }
     }
+
     allResults.push(...syllablesAndLetters); // اضافه کردن به آرایه کلی
   });
 
-  return allResults;
+  return {
+    syllables: allResults,
+    verifyIndex: verifyIndex
+  };
 }

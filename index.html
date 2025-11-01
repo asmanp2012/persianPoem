@@ -101,8 +101,11 @@
       const value = deathEl.querySelector('input').value;
       const resultEl = deathEl.querySelector('.result'); // عنصر نتیجه
       const syllableCountEl = deathEl.querySelector('.syllable-count'); // عنصر تعداد سیلاب‌ها
-      const syllables = extractSyllablesAndLettersFromText(value); // تابعی که در jstest.js تعریف شده
-      resultEl.innerText = syllables.join(' + '); // نمایش نتیجه
+      const extractSyllables = extractSyllablesAndLettersFromText(value); // تابعی که در jstest.js تعریف شده
+      const syllables = extractSyllables['syllables'];
+      const verifySyllables = extractSyllables['verifyIndex'];
+      // console.log(verifySyllables);
+      resultEl.innerText = showSyllables(extractSyllables); // نمایش نتیجه
       syllableCountEl.innerText = `تعداد سیلاب‌ها: ${syllables.length}`; // نمایش تعداد سیلاب‌ها
       const shape = syllables.map(syllable => syllable.length === 1 ? 'U' : '-').join(''); // نمایش سیلاب‌ها
       deathEl.querySelector('.syllable-display span').innerText = shape;
@@ -110,6 +113,20 @@
       deathEl.querySelector('.syllable-display e').innerText = findCombinations(shape);
       // console.log(syllables, shape);
       exportPoem()
+    }
+
+    function showSyllables(extractSyllables)
+    {
+      return extractSyllables['syllables'].map((element, index) => {
+        if(extractSyllables['verifyIndex'].findIndex((index2) => index2 === index) != -1)
+        {
+          return element += `√`;
+        }
+        else
+        {
+          return element;
+        }
+      }).join(' + ');
     }
 
     function exportPoem()
