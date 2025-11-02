@@ -157,13 +157,16 @@
       }
       let lines = poemText.split('\n'); // تقسیم متن به خطوط
       lines = lines.filter((line) => line.trim() !== '');
-      lines.forEach(line => {
-        if(line != '' || line != null)
-        {
+      let allDeath = document.querySelectorAll('.death');
+      if(lines.length > allDeath.length)
+      {
+        linesNeedNumber = lines.length - allDeath.length;
+        for (let index = 0; index < linesNeedNumber; index++) {
           addLine();
+          
         }
-      });
-      const allDeath = document.querySelectorAll('.death');
+      }
+      allDeath = document.querySelectorAll('.death');
       [...allDeath].forEach((el, i) => { 
         if(lines[i] != null)
         {
