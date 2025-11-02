@@ -86,6 +86,7 @@
     function inputEnter(event, inputEl) {
       if (event.key === 'Enter' || event.key === 'Tab') {
         const deathEl = inputEl.parentElement.parentElement.parentElement.parentElement; // استفاده از parentElement
+        const currentEl = inputEl.parentElement.parentElement.parentElement.parentElement
         if(deathEl.nextElementSibling == null)
         {
           addLine();
@@ -94,9 +95,8 @@
         {
           checkValue(deathEl);
         }
-        let allDeath = document.querySelectorAll('.death');
-        const nextEl = deathEl.childElementCount + 1;
-        allDeath[nextEl].querySelector('input').focus();
+        
+        currentEl.nextElementSibling.querySelector('input').focus();
 
         // 
       }
