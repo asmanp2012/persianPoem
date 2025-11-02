@@ -94,6 +94,10 @@
         {
           checkValue(deathEl);
         }
+        let allDeath = document.querySelectorAll('.death');
+        const nextEl = deathEl.childElementCount + 1;
+        allDeath[nextEl].querySelector('input').focus();
+
         // 
       }
     }
