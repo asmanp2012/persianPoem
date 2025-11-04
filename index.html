@@ -27,6 +27,12 @@
     .result {
       text-align: right;
     }
+
+    .summarize {
+      font-size: 1.2em;
+      font-weight: bold;
+      font-family: 'Vazir Code';
+    }
   </style>
 </head>
 <body style="text-align: center;">
@@ -36,7 +42,12 @@
     <div id="input-container" class="mb-3"></div>
     
     <button class="btn btn-primary mb-3" onclick="addLine()">افزودن مصرع جدید</button>
-
+    <div class="summarize">
+      تعداد مصرع ها: <strong class="countLine"></strong>
+      -
+      تعداد ابیات: <strong class="countCouplet"></strong>
+    </div>
+    <br/>
     <div class="import-export"><textarea
       onchange="importPoem(event, this)"
       onfocus="saveLast(event, this)"
@@ -138,6 +149,15 @@
     function exportPoem()
     {
       const allDeathEl = document.querySelectorAll('.death');
+
+      const totalLines = allDeathEl.length; // تعداد کل مصرع‌ها
+      const couplets = Math.floor(totalLines / 2); // محاسبه تعداد ابیات
+
+      // اگر تعداد مصرع‌ها فرد باشد، یک بیت اضافی داریم
+      const hasExtraLine = totalLines % 2 !== 0;
+
+      document.querySelector('.countLine').innerText = totalLines;
+      document.querySelector('.countCouplet').innerText = hasExtraLine ? couplets + 1 : couplets;
       const allDeath = [...allDeathEl].map((el, i) => { 
         if(i%2 != 0)
         {
