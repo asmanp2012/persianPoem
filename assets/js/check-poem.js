@@ -534,7 +534,7 @@ let wordList = {
   "هارید":  ['ها', 'ری', 'د'],
   "گاوید":  ['گا', 'وی', 'د'],
   "مارید":  ['ما', 'ری', 'د'],
-
+  
   "پروانه": ['پر', 'وا', 'ن'],
   "پرنده": ['پ', 'رن', 'د'],
   "رسیده": ['ر', 'سی', 'د'],
@@ -1951,13 +1951,14 @@ function extractSyllablesV(words, syllables, i)
     return 'و';
   }
 }
-function extractSyllablesAndLettersFromWord(word, syllables) {
+function extractSyllablesAndLettersFromWord(word, newWord, syllables) {
   if(wordListDontNeed[word] != null) {
     return {
       syllables: wordListDontNeed[word],
       verify: true
     };
   }
+  word = newWord;
   const result = [];
   let i = 0;
   while (i < word.length) {
@@ -2079,7 +2080,7 @@ function extractSyllablesAndLettersFromText(text) {
         else
         {
           
-          extractSyllables = extractSyllablesAndLettersFromWord(newWord, allResults);
+          extractSyllables = extractSyllablesAndLettersFromWord(word, newWord, allResults);
           syllablesAndLetters = extractSyllables['syllables'];
           if(extractSyllables['verify'])
           {
