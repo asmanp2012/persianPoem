@@ -2150,6 +2150,7 @@ function extractSyllablesAndLettersFromText(text) {
   const words = cleanedText.split(' ');
   const allResults = [];
   let verifyIndex = [];
+  const exWordList = {};
   words.forEach((word, i) => {
     // این قسمت برای اینه که اگر خواستیم و یک هجای جداگانه حساب بشه با کاما جدا میکنیمش
     const comma = checkComma(words, i);
@@ -2163,6 +2164,7 @@ function extractSyllablesAndLettersFromText(text) {
     else if(newWord == 'و')
     {
       syllablesAndLetters = extractSyllablesV(words, allResults, i);
+      words[extractSyllablesV] = syllablesAndLetters;
       allResults.push(...syllablesAndLetters);
       return;
     }
@@ -2185,6 +2187,7 @@ function extractSyllablesAndLettersFromText(text) {
         {
           
           extractSyllables = extractSyllablesAndLettersFromWord(word, newWord, allResults);
+          exWordList[word] = extractSyllables['syllables'];
           syllablesAndLetters = extractSyllables['syllables'];
           if(extractSyllables['verify'])
           {
@@ -2201,6 +2204,7 @@ function extractSyllablesAndLettersFromText(text) {
 
   return {
     syllables: allResults,
-    verifyIndex: verifyIndex
+    verifyIndex: verifyIndex,
+    exWordList
   };
 }

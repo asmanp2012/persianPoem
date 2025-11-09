@@ -54,6 +54,7 @@
       style="width: 100%;"
       rows="15"
     ></textarea></div>
+    <button class="btn btn-primary mb-3" onclick="exportAllWordToJson()">جمع آوری کلمات</button>
   </div>
 
   <script src="./assets/js/word-list-dont-need.js"></script>
@@ -168,6 +169,28 @@
       const outputEl = document.querySelector('textarea');
       outputEl.value = allDeath.join('\n');
     }
+
+    function exportAllWordToJson() {
+      let allDeath = document.querySelectorAll('.death');
+      let result = {};
+      let deathResult = [...allDeath].forEach((deathEl) => { 
+          const value = deathEl.querySelector('input').value;
+          const res = extractSyllablesAndLettersFromText(value)['exWordList'];
+          result = {...result, ...res};
+      });
+      
+
+      
+      // فرمت‌دهی خروجی
+      const formattedResult = Object.keys(result).map((index) => {
+          const value = result[index];
+          return `"${index}": [${value.map((item)=> `'${item}'`).join(', ')}]`; // فرمت کلید و مقدار
+      }).join(',\n  '); // هر آیتم را در یک خط جداگانه قرار می‌دهد
+
+      const finalOutput = `{ \n  ${formattedResult} \n}`;
+      navigator.clipboard.writeText(finalOutput);
+  }
+
 
     function saveLast(event, inputEl) {
       window.lastPoem = inputEl.value;
