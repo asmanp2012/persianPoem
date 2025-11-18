@@ -31,10 +31,30 @@
     .input-group * {
       direction: rtl;
     }
+
+    .nav-link {
+      font-family: system-ui;
+      font-size: 26px;
+    }
   </style>
 </head>
 <body style="text-align: center;">
-
+  <!-- هدر -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="./index.html">تحلیل شعر <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./list-words.html">لیست کلمات</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./about.html">درباره ما</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <div class="container mt-5">
     <h2 class="text-center">کلمات و هجای آن‌ها</h2>
     <h2 class="count-word">تعداد کل کلمات: </h2>
