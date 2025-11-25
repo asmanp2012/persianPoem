@@ -238,6 +238,11 @@
       [...allDeath].forEach((el, i) => { 
         if(lines[i] != null)
         {
+          // for (let index = 8203; index < 8208; index++) {
+          //   lines[i] = lines[i].replaceAll(String.fromCharCode(8203), " ");
+          // }
+          lines[i] = lines[i].replaceAll(String.fromCharCode(8204), " "); // is work
+          
           el.querySelector('input').value = lines[i];
           checkValue(el);
         }
