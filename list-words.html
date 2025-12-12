@@ -7,108 +7,244 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./assets/css/Vazir-Code.css" />
+  <!-- آیکون‌های Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <style>
     .syllable-display {
       margin-top: 20px;
       font-size: 1.2em;
-      white-space: nowrap; /* جلوگیری از شکستن خط */
+      white-space: nowrap;
       font-family: 'Vazir Code';
       direction: ltr;
       text-align: left;
     }
-    .result {
-      text-align: right;
-    }
-    
-    td .bi-check-circle-fill {
-      color: #2fa02f;
-    }
-
-    .input-group {
+    .result { text-align: right;}
+    td .bi-check-circle-fill { color: #2fa02f;}
+    .input-group, .input-group * {
       direction: ltr;
     }
-
-    .input-group * {
-      direction: rtl;
-    }
-
     .nav-link {
       font-family: system-ui;
-      font-size: 26px;
+      font-size: 22px;
+    }
+    
+    /* کارت‌های آمار فشرده */
+    .stats-card {
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      padding-inline: 20px;
+      background: white;
+      display: inline-flex;
+      gap: 11px;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .stats-icon {
+      font-size: 1.5rem;
+    }
+    
+    .stats-title {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    
+    .stats-number {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0;
+    }
+    
+    /* رنگ‌های کارت‌ها */
+    .required-color { color: #ff6b6b; }
+    .accepted-color { color: #28a745; }
+    .not-accepted-color { color: #ffc107; }
+    .auto-color { color: #17a2b8; }
+    
+    /* بهبود جدول */
+    .table th {
+      font-weight: 600;
+      background-color: #f8f9fa !important;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    /* بدنه جدول */
+    .table tbody tr:hover {
+      background-color: rgba(0,0,0,0.02);
+    }
+    
+    /* دکمه جمع‌آوری */
+    .collect-btn {
+      padding: 8px 20px;
+      font-weight: 500;
+      border-radius: 6px;
+    }
+    
+    /* بدنه جداول بدون رنگ */
+    .table tbody td {
+      vertical-align: middle;
+    }
+    
+    /* هجاها در جدول */
+    .syllable-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      margin: 2px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      background: #e9ecef;
+      color: #495057;
+    }
+    
+    /* وضعیت‌ها */
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 4px 8px;
     }
   </style>
 </head>
 <body style="text-align: center;">
   <!-- هدر -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="./index.html">تحلیل شعر <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="./list-words.html">لیست کلمات</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./about.html">درباره ما</a>
-        </li>
-      </ul>
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">
+        <h5 class="mb-0">📚 پروژه متن باز ریتمیک</h5>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">تحلیل شعر</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./list-words.html">لیست کلمات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./about.html">درباره ما</a>
+          </li>
+        </ul>
+      </div>
+      <span class="text-muted">کل کلمات: <span id="totalWords" class="badge badge-light">۰</span></span>
     </div>
   </nav>
-  <div class="container mt-5">
-    <h2 class="text-center">کلمات و هجای آن‌ها</h2>
-    <h2 class="count-word">تعداد کل کلمات: </h2>
-    <h2 class="count-word-need">تعداد کلمات مورد نیاز: </h2>
-    <h2 class="count-word-accept">تعداد کلمات تایید شده: </h2>
-    <h2 class="count-word-not-accept">تعداد کلمات تایید نشده: </h2>
-    <h2 class="count-word-dont-need">تعداد کلمات خارج از لیست: </h2>
+  
+  <div class="container mt-4">
+    <h3 class="text-center mb-3">📖 کلمات و هجای آن‌ها</h3>
+
+    <!-- بخش آمار فشرده -->
+    <div class="stats-card">
+      <div class="required-color stats-icon">
+        <i class="bi bi-list-task"></i>
+      </div>
+      <p class="stats-title">نیاز به محاسبه</p>
+      <h4 class="stats-number count-word-need">۰</h4>
+    </div>
+    <div class="stats-card">
+      <div class="accepted-color stats-icon">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      <p class="stats-title">تایید شده</p>
+      <h4 class="stats-number count-word-accept">۰</h4>
+    </div>
+    <div class="stats-card">
+      <div class="not-accepted-color stats-icon">
+        <i class="bi bi-exclamation-circle"></i>
+      </div>
+      <p class="stats-title">تایید نشده</p>
+      <h4 class="stats-number count-word-not-accept">۰</h4>
+    </div>
+    <div class="stats-card">
+      <div class="auto-color stats-icon">
+        <i class="bi bi-cpu"></i>
+      </div>
+      <p class="stats-title">محاسبه خودکار</p>
+      <h4 class="stats-number count-word-dont-need">۰</h4>
+    </div>
     
+    <!-- فیلترها -->
     <div class="row mb-3">
       <div class="col-md-6">
-        <label for="filterInput">جستجوی کلمه:</label>
-        <input type="text" id="filterInput" placeholder="جستجوی کلمه..." class="form-control" />
+        <div class="form-group">
+          <label for="filterInput" class="form-label">
+            <i class="bi bi-search"></i> جستجوی کلمه:
+          </label>
+          <input type="text" id="filterInput" placeholder="مثال: باران، دل" class="form-control" />
+        </div>
       </div>
       <div class="col-md-6">
-        <label for="weightFilterInput">جستجوی وزن:</label>
-        <div class="input-group">
-          <select class="custom-select" id="weightUnitSelect" onclick="choseWeight()">
-            <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
-          </select>
-          <input type="text" id="weightFilterInput" placeholder="جستجوی وزن..." class="form-control" />
+        <div class="form-group">
+          <label for="weightFilterInput" class="form-label">
+            <i class="bi bi-funnel"></i> فیلتر وزن:
+          </label>
+          <div class="input-group">
+            <select class="custom-select" id="weightUnitSelect">
+              <!-- گزینه‌ها به صورت داینامیک اضافه می‌شوند -->
+            </select>
+            <input type="text" id="weightFilterInput" placeholder="وزن (مثال: 101)" class="form-control" />
+          </div>
         </div>
       </div>
     </div>
     
-    <button class="btn btn-primary mb-3 mt-3" onclick="showChoseWord()">
-      جمع آوری کلمات
-    </button>
+    <!-- دکمه جمع‌آوری -->
+    <div class="text-center mb-3">
+      <button class="btn btn-primary collect-btn" onclick="showChoseWord()">
+        <i class="bi bi-clipboard-plus"></i> جمع‌آوری کلمات انتخاب‌شده
+      </button>
+    </div>
     
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th></th>
+    <!-- جداول -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <strong>کلمات مورد نیاز برای تأیید</strong>
+        <span class="badge badge-secondary" id="requiredCount">۰</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead>
+              <tr>
+                <th width="40">#</th>
                 <th>کلمه</th>
-                <th>هجای آن</th>
-                <th>تایید</th>
-            </tr>
-        </thead>
-        <tbody id="wordListBody">
-            <!-- می‌توانید کلمات بیشتری اضافه کنید -->
-        </tbody>
-    </table>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th></th>
+                <th>هجاها</th>
+                <th width="100">وضعیت</th>
+                <th width="70">انتخاب</th>
+              </tr>
+            </thead>
+            <tbody id="wordListBody">
+              <!-- کلمات اینجا نمایش داده می‌شوند -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <strong>کلمات با محاسبه خودکار</strong>
+        <span class="badge badge-secondary" id="autoCount">۰</span>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-sm table-hover mb-0">
+            <thead>
+              <tr>
+                <th width="40">#</th>
                 <th>کلمه</th>
-                <th>هجای آن</th>
-                <th>تایید</th>
-            </tr>
-        </thead>
-        <tbody id="wordListBody2">
-            <!-- می‌توانید کلمات بیشتری اضافه کنید -->
-        </tbody>
-    </table>
+                <th>هجاها</th>
+                <th width="100">وضعیت</th>
+                <th width="70">انتخاب</th>
+              </tr>
+            </thead>
+            <tbody id="wordListBody2">
+              <!-- کلمات اینجا نمایش داده می‌شوند -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
   
   <script src="./assets/js/word-list-dont-need.js"></script>
@@ -138,8 +274,13 @@
           <td>${item}</td>
           <td>${wordList[item].join(' + ')}</td>
           <td>
+             ${acceptWordList[item] != null
+                ? `<i class="bi bi-check-circle-fill text-success"></i>`
+                : `<i class="bi bi-exclamation-circle text-warning"></i>`
+              }
+          </td>
+          <td>
             <input name="word" value="${item}" type="checkbox" />
-            ${acceptWordList[item] != null ? `<img width="20" src="./assets/images/check.png" />` : ``}
           </td>
       </tr>`).join('');
       
@@ -169,9 +310,9 @@
           <td>${key + 1}</td>
           <td>${item}</td>
           <td>${wordListDontNeed[item].join(' + ')}</td>
+          <td><i class="bi bi-cpu text-info"></i></td>
           <td>
             <input name="word" value="${item}" type="checkbox" />
-            ${acceptWordList[item] != null || true ? `<img width="20" src="./assets/images/check.png" />` : ``}
           </td>
       </tr>`).join('');
       
@@ -182,18 +323,29 @@
     printWords2();
     addBaseWordToSelect();
   
-    document.querySelector('.count-word').innerHTML = `تعداد کل کلمات: ${Object.keys(wordList).length + Object.keys(wordListDontNeed).length}`;
-    document.querySelector('.count-word-need').innerHTML = `تعداد کلمات مورد نیاز: ${Object.keys(wordList).length}`;
-    document.querySelector('.count-word-accept').innerHTML = `تعداد کلمات تایید شده: ${Object.keys(acceptWordList).length}`;
-    document.querySelector('.count-word-not-accept').innerHTML = `تعداد کلمات تایید نشده: ${Object.keys(wordList).length - Object.keys(acceptWordList).length}`;
-    document.querySelector('.count-word-dont-need').innerHTML = `تعداد کلمات خارج از لیست: ${Object.keys(wordListDontNeed).length}`;
+    let allWords = {};
+
+    function loadWords() {
+      if (wordList && wordListDontNeed) {
+        // ترکیب دو لیست
+        allWords = {...wordList, ...wordListDontNeed};
+        
+        document.getElementById('totalWords').textContent = Object.keys(allWords).length;
+        document.querySelector('.count-word-need').innerHTML = Object.keys(wordList).length;
+        document.querySelector('.count-word-accept').innerHTML = Object.keys(acceptWordList).length;
+        document.querySelector('.count-word-not-accept').innerHTML = Object.keys(wordList).length - Object.keys(acceptWordList).length;
+        document.querySelector('.count-word-dont-need').innerHTML = Object.keys(wordListDontNeed).length;
+
+        console.log(`✅ ${Object.keys(allWords).length} کلمه بارگیری شد`);
+      }
+    }
     
+    loadWords();
 
     function showChoseWord() {
       const inputList = document.querySelectorAll('[type="checkbox"]');
       const result = [...inputList].filter((input) => input.checked).map((item) => item.value).join('\n');
       navigator.clipboard.writeText(result);
-      // console.log('Content copied to clipboard');
       alert('Copy below text to clipboard. \n'+result);
     }
 
@@ -201,7 +353,7 @@
       // انتخاب عنصر سلکت
       const selectElement = document.getElementById('weightUnitSelect');
       const weightInput = document.querySelector('#weightFilterInput');
-      selectElement.innerHTML = '<option selected>وزنی انتخاب نشده</option>';
+      selectElement.innerHTML = '<option value="">انتخاب وزن...</option>';
       // اضافه کردن گزینه‌ها به سلکت
       for (const key in baseWord) {
           const option = document.createElement('option');
@@ -221,7 +373,7 @@
       const selectElement = document.getElementById('weightUnitSelect');
       const weightInput = document.querySelector('#weightFilterInput');
       const chose = selectElement.value;
-      weightInput.value = baseWordShape[chose] ?? '';
+      weightInput.value = baseWordShape[chose] || '';
       printWords();
       printWords2();
     }
@@ -230,7 +382,6 @@
     document.getElementById('filterInput').addEventListener('input', function() {
       printWords();
       printWords2();
-      addBaseWordToSelect();
     });
 
     document.getElementById('weightFilterInput').addEventListener('input', function() {
@@ -238,11 +389,12 @@
       printWords2();
       addBaseWordToSelect();
     });
-  </script>
 
-  <!-- Bootstrap JS (optional) -->
-  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script> -->
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    // رویداد تغییر در سلکت وزن
+    document.getElementById('weightUnitSelect').addEventListener('change', choseWeight);
+
+    // بارگذاری اولیه
+    addBaseWordToSelect();
+  </script>
 </body>
 </html>

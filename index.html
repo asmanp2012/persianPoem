@@ -35,25 +35,31 @@
     }
     .nav-link {
       font-family: system-ui;
-      font-size: 26px;
+      font-size: 22px;
     }
   </style>
 </head>
 <body style="text-align: center;">
   <!-- هدر -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="./index.html">تحلیل شعر <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./list-words.html">لیست کلمات</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./about.html">درباره ما</a>
-        </li>
-      </ul>
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">
+        <h2 class="mb-0" style="color: var(--primary-color);font-size: larger;">📚 پروژه متن باز ریتمیک</h4>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">تحلیل شعر <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./list-words.html">لیست کلمات</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./about.html">درباره ما</a>
+          </li>
+        </ul>
+      </div>
+      <span class="text-muted">تعداد کلمات: <span id="totalWords">۰</span></span>
     </div>
   </nav>
   <div class="container mt-5">
@@ -81,6 +87,20 @@
   <script src="./assets/js/check-poem.js"></script>
   <script>
     window.lastPoem = '';
+    let allWords = {};
+
+    function loadWords() {
+      if (wordList && wordListDontNeed) {
+        // ترکیب دو لیست
+        allWords = {...wordList, ...wordListDontNeed};
+        
+        document.getElementById('totalWords').textContent = Object.keys(allWords).length;
+        console.log(`✅ ${Object.keys(allWords).length} کلمه بارگیری شد`);
+      }
+    }
+    
+    loadWords();
+    
     function addLine() {
       const inputContainer = document.getElementById('input-container');
       const newInput = document.createElement('div');
