@@ -7,25 +7,24 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./assets/css/Vazir-Code.css" />
-  <style>
-    .nav-link {
-      font-family: system-ui;
-      font-size: 22px;
-    }
-    .project-description {
-      text-align: right; /* متن راست چین */
-      font-size: 18px; /* اندازه فونت */
-      line-height: 1.6; /* فاصله بین خطوط */
-    }
-  </style>
+  <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 <body style="text-align: center;">
   <!-- هدر -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand" href="./index.html">
-        <h2 class="mb-0" style="color: var(--primary-color);font-size: larger;">📚 پروژه متن باز ریتمیک</h4>
+        <h2 class="mb-0">📚 پروژه متن باز ریتمیک</h4>
       </a>
+      <!-- دکمه همبرگری برای موبایل -->
+      <button
+        id="navbar-toggler"
+        class="navbar-toggler"
+        type="button"
+        onclick="toggleNavbar()"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -71,20 +70,6 @@
   </div>
   <script src="./assets/js/word-list-dont-need.js"></script>
   <script src="./assets/js/check-poem.js"></script>
-  <script>
-    let allWords = {};
-
-    function loadWords() {
-      if (wordList && wordListDontNeed) {
-        // ترکیب دو لیست
-        allWords = {...wordList, ...wordListDontNeed};
-        
-        document.getElementById('totalWords').textContent = Object.keys(allWords).length;
-        console.log(`✅ ${Object.keys(allWords).length} کلمه بارگیری شد`);
-      }
-    }
-    
-    loadWords();
-  </script>
+  <script src="./assets/js/custome.js"></script>
 </body>
 </html>
