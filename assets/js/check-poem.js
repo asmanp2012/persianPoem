@@ -3914,4 +3914,37 @@ function extractSyllablesAndLettersFromText(text) {
   };
 }
 
-
+function getKeysDuplicate(obj1, obj2, options = {}) {
+  const { 
+    caseSensitive = true,
+    includeValues = false 
+  } = options;
+  
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  
+  let commonKeys;
+  
+  if (!caseSensitive) {
+    const keys1Lower = keys1.map(k => k.toLowerCase());
+    const keys2Lower = keys2.map(k => k.toLowerCase());
+    
+    commonKeys = keys1.filter((key, index) => 
+      keys2Lower.includes(keys1Lower[index])
+    );
+  } else {
+    commonKeys = keys1.filter(key => keys2.includes(key));
+  }
+  
+  if (includeValues) {
+    return commonKeys.reduce((result, key) => {
+      result[key] = {
+        value1: obj1[key],
+        value2: obj2[key]
+      };
+      return result;
+    }, {});
+  }
+  
+  return commonKeys;
+}
