@@ -11,8 +11,8 @@ function loadWords() {
 
     console.log(`✅ ${Object.keys(allWords).length} کلمه بارگیری شد`);
     
-    if(allWords != null){elTotal.textContent = Object.keys(allWords).length;}
-    if(elTotal != null){elNeed.innerHTML = Object.keys(wordList).length;}
+    if(elTotal != null){elTotal.textContent = Object.keys(allWords).length;}
+    if(elNeed != null){elNeed.innerHTML = Object.keys(wordList).length;}
     if(elAccept != null) { elAccept.innerHTML = Object.keys(acceptWordList).length;}
     if(elNotAccept != null){ elNotAccept.innerHTML = Object.keys(wordList).length - Object.keys(acceptWordList).length;}
     if(elDontNeed != null) {elDontNeed.innerHTML = Object.keys(wordListDontNeed).length;}
