@@ -14,7 +14,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand logo" href="./index.html">
-        <h2 class="mb-0">📚 پروژه متن باز ریتمیک</h4>
+        <h2 class="mb-0">📚 پروژه متن باز ریتمیک</h2>
       </a>
       <!-- دکمه همبرگری برای موبایل -->
       <button
@@ -60,6 +60,8 @@
       style="width: 100%;"
       rows="15"
     ></textarea></div>
+    <!-- دکمه اشتراک‌گذاری -->
+    <button class="btn btn-success mb-3" onclick="sharePage()">اشتراک‌گذاری این صفحه</button>
     <button class="btn btn-primary mb-3" onclick="exportAllWordToJson()">جمع آوری کلمات</button>
   </div>
 
@@ -68,7 +70,19 @@
   <script src="./assets/js/custome.js"></script>
   <script>
     window.lastPoem = '';
-    
+    function sharePage() {
+      const outputEl = document.querySelector('textarea');
+      const textContent = outputEl.value; // دریافت محتوای textarea
+      
+      // دریافت URL فعلی
+      const currentURL = new URL(window.location.href);
+      
+      // اضافه کردن یا به‌روزرسانی پارامتر 'text'
+      currentURL.searchParams.set('Text', textContent);
+      window.history.replaceState({}, '', currentURL);
+
+      navigator.clipboard.writeText(window.location.href);
+    }
     function addLine() {
       const inputContainer = document.getElementById('input-container');
       const newInput = document.createElement('div');
@@ -235,6 +249,15 @@
           checkValue(el);
         }
       });
+    }
+
+    const params = new URL(document.location.href).searchParams;
+    let text = params.get('Text');
+    if(text != '', text != null)
+    {
+      const inputEl = document.querySelector('textarea');
+      inputEl.value = text;
+      importPoem(null, inputEl);
     }
   </script>
 
